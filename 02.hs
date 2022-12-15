@@ -1,6 +1,8 @@
-data Shape = Rock | Paper | Scissors deriving Show
+data Shape   = Rock | Paper | Scissors deriving Show
 data Outcome = Win | Loss | Draw
-type Game = (Shape, Shape)
+
+type Game  = (Shape, Shape)
+type Guide = (Shape, Outcome)
 
 
 split :: String -> Char -> [String]
@@ -20,8 +22,30 @@ toShape c | c `elem` ['A', 'X'] = Rock
           | c `elem` ['B', 'Y'] = Paper
           | c `elem` ['C', 'Z'] = Scissors
 
+toOutcome :: Char -> Outcome
+toOutcome c = case c of 
+                   'Z' -> Win
+                   'Y' -> Draw
+                   'X' -> Loss
+
+findShape :: Shape -> Outcome -> Shape
+findShape s o = case o of 
+                     Win  -> beats
+                     Draw -> s
+                     Loss -> findShape beats Win 
+                where beats = case s of
+                                   Rock     -> Paper
+                                   Paper    -> Scissors
+                                   Scissors -> Rock
+
 toGame :: String -> Game
 toGame (opp:_:you:_) = (toShape opp, toShape you)
+
+toGuide :: String -> Guide
+toGuide (opp:_:strat:_) = (toShape opp, toOutcome strat)
+
+toGuideGame :: Guide -> Game
+toGuideGame (opp, out) = (opp, findShape opp out)
 
 outcome :: Game -> Outcome
 outcome (Rock    , Scissors) = Loss
@@ -47,4 +71,11 @@ score g@(opp, you) = (scoreOutcome (outcome g)) + (scoreShape you)
 
 main = do
     input <- readFile "inputs/02.txt"
-    print (foldl (+) 0 (map score (map toGame (split input '\n'))))
+    -- part 1
+    --print (foldl (+) 0 (map score (map toGame (split input '\n'))))
+    print (foldl (+)
+                 0
+                 (map score 
+                      (map toGuideGame 
+                           (map toGuide 
+                                (split input '\n')))))
