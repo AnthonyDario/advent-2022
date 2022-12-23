@@ -1,5 +1,8 @@
 run: build
-	out/05
+	out/main
 
-build:
-	ghc -o out/05 05.hs
+build: clean
+	ghc -i src/* -o out/main
+
+clean:
+	rm src/*.hi src/*.o

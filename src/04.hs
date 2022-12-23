@@ -1,3 +1,5 @@
+module Four where
+
 import Data.Char (digitToInt)
 import Util
 
@@ -13,14 +15,14 @@ toNumInner (h:t) acc = toNumInner t ((acc * 10) + (digitToInt h))
 
 toPairs :: String -> [Pair]
 toPairs [] = []
-toPairs s = map toPair (init (split '\n' s))
+toPairs s = map toPair (init (split s "\n"))
 
 toPair :: String -> Pair
-toPair s = case (map toRange (split ',' s)) of
+toPair s = case (map toRange (split s ",")) of
                 (a:b:_) -> (a, b)
 
 toRange :: String -> Range
-toRange s = case take 2 (split '-' s) of 
+toRange s = case take 2 (split s "-") of 
                  (l:r:_) -> (toNum l, toNum r)
 
 contains :: Pair -> Bool
@@ -31,8 +33,17 @@ overlaps :: Pair -> Bool
 overlaps (l, r) = (fst l <= fst r && snd l >= fst r) ||
                   (fst r <= fst l && snd r >= fst l)
 
--- Find pairs that fully contain the other
+part1 :: String -> Int
+part1 s = (foldl (\x y -> if contains y then x + 1 else x) 
+                 0
+                 (toPairs s))
 
+part2 :: String -> Int
+part2 s = foldl (\x y -> if overlaps y then x + 1 else x) 
+                 0
+                 (toPairs s)
+
+{-
 main = do
     input <- readFile "inputs/04.txt"
 
@@ -45,3 +56,4 @@ main = do
     print (foldl (\x y -> if overlaps y then x + 1 else x) 
                  0
                  (toPairs input))
+    -}

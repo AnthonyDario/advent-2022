@@ -1,3 +1,5 @@
+module Three where
+
 import Data.Char (ord, isUpper)
 import Util
 
@@ -27,18 +29,14 @@ findCommon (x:xs) ys = if   x `elem` ys
                        then (x:(findCommon xs ys))
                        else findCommon xs ys
 
-main = do
-    input <- readFile "inputs/03.txt"
+part1 :: String -> Int
+part1 s = suml (map getPrio
+                  (map findSame 
+                       (map bisect 
+                            (split s "\n"))))
 
-    {- Part 1
-    print (suml (map getPrio
-                     (map findSame 
-                          (map bisect 
-                               (split input '\n')))))
-    -}
-    
-    {- Part 2 -}
-    print (suml (map getPrio
-                     (map head
-                          (map findCommonN 
-                               (intoThrees (split input '\n'))))))
+part2 :: String -> Int
+part2 s = suml (map getPrio
+                    (map head
+                         (map findCommonN 
+                              (intoThrees (split s "\n")))))

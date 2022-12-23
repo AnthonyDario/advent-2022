@@ -1,3 +1,5 @@
+module Two where
+
 data Shape   = Rock | Paper | Scissors deriving Show
 data Outcome = Win | Loss | Draw
 
@@ -69,13 +71,13 @@ scoreShape Scissors = 3
 score :: Game -> Int
 score g@(opp, you) = (scoreOutcome (outcome g)) + (scoreShape you)
 
-main = do
-    input <- readFile "inputs/02.txt"
-    -- part 1
-    --print (foldl (+) 0 (map score (map toGame (split input '\n'))))
-    print (foldl (+)
-                 0
-                 (map score 
-                      (map toGuideGame 
-                           (map toGuide 
-                                (split input '\n')))))
+part1 :: String -> Int
+part1 s = foldl (+) 0 (map score (map toGame (split s '\n')))
+
+part2 :: String -> Int
+part2 s = foldl (+)
+                0
+                (map Two.score 
+                     (map Two.toGuideGame 
+                          (map Two.toGuide 
+                               (Two.split s '\n'))))

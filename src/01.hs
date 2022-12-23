@@ -1,3 +1,5 @@
+module One where
+
 left :: (a, b) -> a
 left (x, y) = x
 
@@ -18,28 +20,26 @@ findLine (x:xs) c
     | x == c    = ([], xs)
     | otherwise = mapTup (findLine xs c) (\w -> x:w) (\x -> x)
 
-count :: [String] -> [Integer]
+count :: [String] -> [Int]
 count l = foldr (\x acc -> case acc of
                             []         | x == ""   -> [] 
-                                       | otherwise -> [read x :: Integer]
+                                       | otherwise -> [read x :: Int]
                             (cur:rest) | x == ""   -> 0:(cur:rest)
-                                       | otherwise -> (cur + (read x :: Integer)) : rest)
+                                       | otherwise -> (cur + (read x :: Int)) : rest)
            []
            l
 
-max :: Integer -> Integer -> Integer
+max :: Int -> Int -> Int
 max x y = if x > y then x else y
 
-maxThree :: Integer -> (Integer, Integer, Integer) -> (Integer, Integer, Integer)
+maxThree :: Int -> (Int, Int, Int) -> (Int, Int, Int)
 maxThree i curr@(a, b, c) = if i < min then curr else (i, x, y)
     where
     (min, x, y) = if a <= b && a <= c then (a, b, c) else 
                   if b <= a && b <= c then (b, a, c) else (c, b, a)
-main = do
-    input <- readFile "input/01.txt"
 
-    -- problem 1
-    --print (foldr Main.max 0 (count (split input '\n')))
-    
-    -- problem 2
-    print ((\(a, b, c) -> a + b + c) (foldr maxThree (0, 0, 0) (count (split input '\n'))))
+part1 :: String -> Int
+part1 s = foldr One.max 0 (count (split s '\n'))
+
+part2 :: String -> Int
+part2 s = (\(a, b, c) -> a + b + c) (foldr maxThree (0, 0, 0) (count (One.split s '\n')))
