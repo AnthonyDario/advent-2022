@@ -1,5 +1,5 @@
 run: build
-	out/03
+	out/05
 
 build:
-	ghc -o out/03 03.hs
+	ghc -o out/05 05.hs
