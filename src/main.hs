@@ -3,6 +3,7 @@ import qualified Two
 import qualified Three
 import qualified Four
 import qualified Five
+import qualified Six
 
 main = do
 
@@ -57,6 +58,19 @@ main = do
     putStr ("Part 1: ")
     print (Five.part1 input5)
     
-    {- Part 2 -}
+    -- Part 2
     putStr ("Part 2: ")
     print (Five.part2 input5)
+
+
+    putStr ("\nDay 6\n--------------------\n")
+    --input6 <- readFile "inputs/06-test.txt"
+    input6 <- readFile "inputs/06.txt"
+
+    -- Part 1
+    putStr ("Part 1: ")
+    print (Six.part1 input6)
+    
+    -- Part 2
+    putStr ("Part 2: ")
+    print (Six.part2 input6)

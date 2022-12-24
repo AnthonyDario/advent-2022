@@ -17,7 +17,7 @@ splitInner s@(x:xs) sp a@(y:ys) = case lookAhead s sp [] of
                                        No  (pos, a') -> splitInner pos sp ((y ++ a'):ys)
 
 -- Whether the lookAhead matched or not
-data Match = Yes (String , String) | No (String , String)
+data Match = Yes (String, String) | No (String, String)
 
 -- Look ahead to see if the string contains the prefix.
 -- Returns suffix of the input string that wasn't looked at
